@@ -1,4 +1,4 @@
-package phone_otp;
+package phone_code;
 
 import org.keycloak.Config;
 import org.keycloak.authentication.Authenticator;
@@ -14,13 +14,13 @@ import static org.keycloak.models.AuthenticationExecutionModel.Requirement;
 
 public class AuthFactory implements AuthenticatorFactory {
 
-    public static final String PROVIDER_ID = "phone-otp-authenticator";
+    public static final String PROVIDER_ID = "phone-code-authenticator";
     static Auth SINGLETON = new Auth();
 
     private static final Requirement[] REQUIREMENT_CHOICES = {
-            Requirement.REQUIRED,
-            Requirement.ALTERNATIVE,
-            Requirement.DISABLED
+        Requirement.REQUIRED,
+        Requirement.ALTERNATIVE,
+        Requirement.DISABLED
     };
 
     @Override
@@ -44,7 +44,7 @@ public class AuthFactory implements AuthenticatorFactory {
 
     @Override
     public String getReferenceCategory() {
-        return "phone-otp";
+        return "phone-code";
     }
 
     @Override
@@ -59,17 +59,17 @@ public class AuthFactory implements AuthenticatorFactory {
 
     @Override
     public String getDisplayType() {
-        return "Phone OTP (Quick)";
+        return "Phone code (Quick)";
     }
 
     @Override
     public String getHelpText() {
-        return "Minimal custom authenticator for phone OTP flow.";
+        return "Minimal custom authenticator for phone code flow.";
     }
 
     @Override
     public List<ProviderConfigProperty> getConfigProperties() {
-        return phone_otp.Config.getConfigProperties();
+        return phone_code.Config.getConfigProperties();
     }
 
     @Override

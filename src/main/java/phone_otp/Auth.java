@@ -1,4 +1,4 @@
-package phone_otp;
+package phone_code;
 
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.Authenticator;
@@ -12,9 +12,9 @@ import jakarta.ws.rs.core.Response;
 public class Auth implements Authenticator {
 
     private static final Logger LOG = Logger.getLogger(Auth.class);
-    private final OtpSender otpSender = new OtpSender();
-    private final OtpVerifier otpVerifier = new OtpVerifier();
-    private final OtpGenerator otpGenerator = new OtpGenerator();
+    private final CodeSender codeSender = new CodeSender();
+    private final CodeVerifier codeVerifier = new CodeVerifier();
+    private final CodeGenerator codeGenerator = new CodeGenerator();
 
     @Override
     public void authenticate(AuthenticationFlowContext context) {
@@ -37,8 +37,8 @@ public class Auth implements Authenticator {
     public void action(AuthenticationFlowContext context) {
         MultivaluedMap<String, String> formParams = context.getHttpRequest().getDecodedFormParameters();
 
-        if (formParams.containsKey("otp")) {
-            otpVerifier.verify(context, formParams.getFirst("otp"));
+        if (formParams.containsKey("code")) {
+            codeVerifier.verify(context, formParams.getFirst("code"));
             return;
         }
 
@@ -59,32 +59,32 @@ public class Auth implements Authenticator {
             user.setEnabled(true);
         }
 
-        Integer otpLength = Config.getConfig(context, "otpLength", Integer.class);
-        String otp = otpGenerator.generate(otpLength);
-        context.getAuthenticationSession().setAuthNote("otp", otp);
+        Integer codeLength = Config.getConfig(context, "codeLength", Integer.class);
+        String code = codeGenerator.generate(codeLength);
+        context.getAuthenticationSession().setAuthNote("code", code);
         context.getAuthenticationSession().setAuthNote("phone", phone);
 
-        if (otpSender.send(context, phone, otp)) {
+        if (codeSender.send(context, phone, code)) {
             Integer secondsToEnableResending = Config.getConfig(context, "secondsToEnableResending", Integer.class);
             Boolean enablePhoneCall = Config.getConfig(context, "enablePhoneCall", Boolean.class);
-            Boolean separateOtpInputs = Config.getConfig(context, "separateOtpInputs", Boolean.class);
-            Boolean autoSubmitOtp = Config.getConfig(context, "autoSubmitOtp", Boolean.class);
+            Boolean separateCodeInputs = Config.getConfig(context, "separateCodeInputs", Boolean.class);
+            Boolean autoSubmitCode = Config.getConfig(context, "autoSubmitCode", Boolean.class);
             String logoUrl = Config.getConfig(context, "logoUrl", String.class);
 
             LoginFormsProvider form = context.form();
             form.setAttribute("phone", phone);
-            form.setAttribute("otpLength", otp.length());
+            form.setAttribute("codeLength", code.length());
             form.setAttribute("secondsToEnableResending", secondsToEnableResending);
             form.setAttribute("enablePhoneCall", enablePhoneCall);
-            form.setAttribute("separateOtpInputs", separateOtpInputs);
-            form.setAttribute("autoSubmitOtp", autoSubmitOtp);
+            form.setAttribute("separateCodeInputs", separateCodeInputs);
+            form.setAttribute("autoSubmitCode", autoSubmitCode);
             if (logoUrl != null) {
                 form.setAttribute("logoUrl", logoUrl);
             }
             context.challenge(form.createForm("otp.ftl"));
         } else {
-            String error = (String) session.getAttribute("otpErrorKey");
-            context.getSession().setAttribute("phoneErrorKey", error != null ? error : "otpSendFailed");
+            String error = (String) session.getAttribute("codeErrorKey");
+            context.getSession().setAttribute("phoneErrorKey", error != null ? error : "codeSendFailed");
             authenticate(context);
         }
 
