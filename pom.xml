@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>phone_otp</groupId>
-    <artifactId>phone-otp-provider</artifactId>
+    <groupId>phone_code</groupId>
+    <artifactId>phone-code-provider</artifactId>
     <version>${keycloak.version}</version>
     <packaging>jar</packaging>
 
@@ -50,7 +50,7 @@
     </dependencies>
 
     <build>
-        <finalName>phone-otp-provider</finalName>
+        <finalName>phone-code-provider</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

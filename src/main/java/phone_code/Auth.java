@@ -81,7 +81,7 @@ public class Auth implements Authenticator {
             if (logoUrl != null) {
                 form.setAttribute("logoUrl", logoUrl);
             }
-            context.challenge(form.createForm("otp.ftl"));
+            context.challenge(form.createForm("code.ftl"));
         } else {
             String error = (String) session.getAttribute("codeErrorKey");
             context.getSession().setAttribute("phoneErrorKey", error != null ? error : "codeSendFailed");

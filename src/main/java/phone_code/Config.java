@@ -1,4 +1,4 @@
-package phone_otp;
+package phone_code;
 
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.provider.ProviderConfigProperty;
@@ -12,18 +12,18 @@ public class Config {
         List<ProviderConfigProperty> configProperties = new ArrayList<>();
 
         ProviderConfigProperty urlProperty = new ProviderConfigProperty();
-        urlProperty.setName("otpUrlTemplate");
+        urlProperty.setName("codeUrlTemplate");
         urlProperty.setLabel("OTP URL Template");
         urlProperty.setType(ProviderConfigProperty.STRING_TYPE);
-        urlProperty.setHelpText("Example: https://some-host.tld/accounts/sendOtp?phone={phone}&otp={otp}&realm={realm}");
+        urlProperty.setHelpText("Example: https://some-host.tld/accounts/sendCode?phone={phone}&code={code}&realm={realm}");
         configProperties.add(urlProperty);
 
-        ProviderConfigProperty fakeSendingOtpProperty = new ProviderConfigProperty();
-        fakeSendingOtpProperty.setName("fakeSendingOtp");
-        fakeSendingOtpProperty.setLabel("Fake Sending OTP");
-        fakeSendingOtpProperty.setType(ProviderConfigProperty.BOOLEAN_TYPE);
-        fakeSendingOtpProperty.setHelpText("Enable this to bypass sending the OTP for testing purposes.");
-        configProperties.add(fakeSendingOtpProperty);
+        ProviderConfigProperty fakeSendingCodeProperty = new ProviderConfigProperty();
+        fakeSendingCodeProperty.setName("fakeSendingCode");
+        fakeSendingCodeProperty.setLabel("Fake Sending OTP");
+        fakeSendingCodeProperty.setType(ProviderConfigProperty.BOOLEAN_TYPE);
+        fakeSendingCodeProperty.setHelpText("Enable this to bypass sending the OTP for testing purposes.");
+        configProperties.add(fakeSendingCodeProperty);
 
         ProviderConfigProperty logoUrlProperty = new ProviderConfigProperty();
         logoUrlProperty.setName("logoUrl");
@@ -32,12 +32,12 @@ public class Config {
         logoUrlProperty.setHelpText("URL of the logo to display in pages.");
         configProperties.add(logoUrlProperty);
 
-        ProviderConfigProperty otpLengthProperty = new ProviderConfigProperty();
-        otpLengthProperty.setName("otpLength");
-        otpLengthProperty.setLabel("OTP Length");
-        otpLengthProperty.setType(ProviderConfigProperty.STRING_TYPE);
-        otpLengthProperty.setHelpText("Number of digits in the OTP code (e.g., 4, 6).");
-        configProperties.add(otpLengthProperty);
+        ProviderConfigProperty codeLengthProperty = new ProviderConfigProperty();
+        codeLengthProperty.setName("codeLength");
+        codeLengthProperty.setLabel("OTP Length");
+        codeLengthProperty.setType(ProviderConfigProperty.STRING_TYPE);
+        codeLengthProperty.setHelpText("Number of digits in the OTP code (e.g., 4, 6).");
+        configProperties.add(codeLengthProperty);
 
         ProviderConfigProperty secondsToEnableResendingProperty = new ProviderConfigProperty();
         secondsToEnableResendingProperty.setName("secondsToEnableResending");
@@ -53,19 +53,19 @@ public class Config {
         enablePhoneCallProperty.setHelpText("Enable this to deliver OTP via a phone call instead of SMS.");
         configProperties.add(enablePhoneCallProperty);
 
-        ProviderConfigProperty separateOtpInputsProperty = new ProviderConfigProperty();
-        separateOtpInputsProperty.setName("separateOtpInputs");
-        separateOtpInputsProperty.setLabel("Separate OTP Inputs");
-        separateOtpInputsProperty.setType(ProviderConfigProperty.BOOLEAN_TYPE);
-        separateOtpInputsProperty.setHelpText("If enabled, the user enters OTP digits in separate input fields instead of one.");
-        configProperties.add(separateOtpInputsProperty);
+        ProviderConfigProperty separateCodeInputsProperty = new ProviderConfigProperty();
+        separateCodeInputsProperty.setName("separateCodeInputs");
+        separateCodeInputsProperty.setLabel("Separate OTP Inputs");
+        separateCodeInputsProperty.setType(ProviderConfigProperty.BOOLEAN_TYPE);
+        separateCodeInputsProperty.setHelpText("If enabled, the user enters OTP digits in separate input fields instead of one.");
+        configProperties.add(separateCodeInputsProperty);
 
-        ProviderConfigProperty autoSubmitOtpProperty = new ProviderConfigProperty();
-        autoSubmitOtpProperty.setName("autoSubmitOtp");
-        autoSubmitOtpProperty.setLabel("Auto Submit OTP");
-        autoSubmitOtpProperty.setType(ProviderConfigProperty.BOOLEAN_TYPE);
-        autoSubmitOtpProperty.setHelpText("If enabled, the form submits automatically when all OTP digits are entered.");
-        configProperties.add(autoSubmitOtpProperty);
+        ProviderConfigProperty autoSubmitCodeProperty = new ProviderConfigProperty();
+        autoSubmitCodeProperty.setName("autoSubmitCode");
+        autoSubmitCodeProperty.setLabel("Auto Submit OTP");
+        autoSubmitCodeProperty.setType(ProviderConfigProperty.BOOLEAN_TYPE);
+        autoSubmitCodeProperty.setHelpText("If enabled, the form submits automatically when all OTP digits are entered.");
+        configProperties.add(autoSubmitCodeProperty);
 
         return configProperties;
     }

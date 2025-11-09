@@ -56,17 +56,17 @@
     "requiredCredentials": [
         "password"
     ],
-    "otpPolicyType": "totp",
-    "otpPolicyAlgorithm": "HmacSHA1",
-    "otpPolicyInitialCounter": 0,
-    "otpPolicyDigits": 6,
-    "otpPolicyLookAheadWindow": 1,
-    "otpPolicyPeriod": 30,
-    "otpPolicyCodeReusable": false,
-    "otpSupportedApplications": [
-        "totpAppFreeOTPName",
-        "totpAppGoogleName",
-        "totpAppMicrosoftAuthenticatorName"
+    "codePolicyType": "tcode",
+    "codePolicyAlgorithm": "HmacSHA1",
+    "codePolicyInitialCounter": 0,
+    "codePolicyDigits": 6,
+    "codePolicyLookAheadWindow": 1,
+    "codePolicyPeriod": 30,
+    "codePolicyCodeReusable": false,
+    "codeSupportedApplications": [
+        "tcodeAppFreeOTPName",
+        "tcodeAppGoogleName",
+        "tcodeAppMicrosoftAuthenticatorName"
     ],
     "localizationTexts": {},
     "webAuthnPolicyRpEntityName": "keycloak",
@@ -819,7 +819,7 @@
         "strictTransportSecurity": "max-age=31536000; includeSubDomains"
     },
     "smtpServer": {},
-    "loginTheme": "phoneOtpDefault",
+    "loginTheme": "phoneCodeDefault",
     "accountTheme": "",
     "adminTheme": "",
     "emailTheme": "",
@@ -1052,7 +1052,7 @@
                     "userSetupAllowed": false
                 },
                 {
-                    "authenticator": "auth-otp-form",
+                    "authenticator": "auth-code-form",
                     "authenticatorFlow": false,
                     "requirement": "ALTERNATIVE",
                     "priority": 30,
@@ -1120,7 +1120,7 @@
                     "userSetupAllowed": false
                 },
                 {
-                    "authenticator": "direct-grant-validate-otp",
+                    "authenticator": "direct-grant-validate-code",
                     "authenticatorFlow": false,
                     "requirement": "REQUIRED",
                     "priority": 20,
@@ -1181,7 +1181,7 @@
                     "userSetupAllowed": false
                 },
                 {
-                    "authenticator": "auth-otp-form",
+                    "authenticator": "auth-code-form",
                     "authenticatorFlow": false,
                     "requirement": "ALTERNATIVE",
                     "priority": 30,
@@ -1345,14 +1345,14 @@
         {
             "id": "726e8898-eb59-4c76-9876-cb805525fe30",
             "alias": "Phone OTP browser forms",
-            "description": "Username, password, otp and other auth forms.",
+            "description": "Username, password, code and other auth forms.",
             "providerId": "basic-flow",
             "topLevel": false,
             "builtIn": false,
             "authenticationExecutions": [
                 {
-                    "authenticatorConfig": "phoneOtp",
-                    "authenticator": "phone-otp-authenticator",
+                    "authenticatorConfig": "phoneCode",
+                    "authenticator": "phone-code-authenticator",
                     "authenticatorFlow": false,
                     "requirement": "REQUIRED",
                     "priority": 0,
@@ -1378,7 +1378,7 @@
                     "userSetupAllowed": false
                 },
                 {
-                    "authenticator": "reset-otp",
+                    "authenticator": "reset-code",
                     "authenticatorFlow": false,
                     "requirement": "REQUIRED",
                     "priority": 20,
@@ -1622,7 +1622,7 @@
         {
             "id": "9a20a441-8560-44c6-bcc8-7617db9b49cf",
             "alias": "forms",
-            "description": "Username, password, otp and other auth forms.",
+            "description": "Username, password, code and other auth forms.",
             "providerId": "basic-flow",
             "topLevel": false,
             "builtIn": true,
@@ -1791,16 +1791,16 @@
         },
         {
             "id": "66bde49b-8138-4c5b-b885-f88e5e4a6c82",
-            "alias": "phoneOtp",
+            "alias": "phoneCode",
             "config": {
-                "otpLength": "5",
+                "codeLength": "5",
                 "secondsToEnableResending": "90",
                 "enablePhoneCall": "true",
-                "otpUrlTemplate": "https://api.holism.ir/accounts/sendOtp?phone={phone}&otp={otp}",
-                "separateOtpInputs": "true",
-                "autoSubmitOtp": "true",
+                "codeUrlTemplate": "https://api.holism.ir/accounts/sendCode?phone={phone}&code={code}",
+                "separateCodeInputs": "true",
+                "autoSubmitCode": "true",
                 "logoUrl": "https://storage.holism.ir/itemsetting/1440fbae-407f-415f-a5b1-a12f8982c37b",
-                "fakeSendingOtp": "true"
+                "fakeSendingCode": "true"
             }
         },
         {
@@ -1954,7 +1954,7 @@
         "clientSessionIdleTimeout": "0",
         "clientOfflineSessionIdleTimeout": "0",
         "cibaInterval": "5",
-        "realmReusableOtpCode": "false",
+        "realmReusableCodeCode": "false",
         "cibaExpiresIn": "120",
         "oauth2DeviceCodeLifespan": "600",
         "parRequestUriLifespan": "60",
