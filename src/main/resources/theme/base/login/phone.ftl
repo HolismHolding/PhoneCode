@@ -12,7 +12,6 @@
                 id="phone"
                 name="phone"
                 placeholder="${msg('phonePlaceholder',' ')}"
-                maxlength="11"
                 value="${phone!''}"
                 aria-invalid="<#if phoneErrorKey??>true</#if>"
                 autocomplete="off">

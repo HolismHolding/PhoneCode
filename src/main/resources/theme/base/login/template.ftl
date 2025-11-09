@@ -13,6 +13,18 @@
     <link rel="stylesheet" type="text/css" href="${url.resourcesPath}/css/styles.css" />
 </head>
 <body class="${properties.kcBodyClass!}">
+    <div id="otp-config"
+        data-phone-maxlength="${phoneMaxLength!'11'}"
+        data-otp-length="${otpLength!'6'}"
+        data-resend-seconds="${secondsToEnableResending!'60'}"
+        data-text-resend="${msg('resendOtpText')}"
+        data-text-timer-prefix="${msg('timerText')}"
+        data-text-seconds="${msg('secondsText')}"
+        data-text-change-phone="${msg('changePhoneText')}"
+        data-text-sign-in="${msg('signInText')}"
+        data-text-signing-in="${msg('signingInText')}"
+    />
+
     <div class="login-container">
         <header class="login-header">
             <#if logoUrl?? && logoUrl?has_content>
