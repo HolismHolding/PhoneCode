@@ -1,13 +1,13 @@
 <#import "template.ftl" as layout>
 <@layout.layoutBody>
-<form id="otp-form" class="login-card" action="${url.loginAction}" method="POST" autocomplete="off" novalidate>
-    <input type="hidden" id="otp" name="otp" value="${otp!''}" />
-    <div id="otp-step" class="login-step">
+<form id="code-form" class="login-card" action="${url.loginAction}" method="POST" autocomplete="off" novalidate>
+    <input type="hidden" id="code" name="code" value="${code!''}" />
+    <div id="code-step" class="login-step">
         <div class="step-header">
-            <h2 class="step-title">${msg("otpLabel")}</h2>
+            <h2 class="step-title">${msg("codeLabel")}</h2>
         </div>
         <div class="step-description">
-            ${msg("enterOtpInstruction")}
+            ${msg("enterCodeInstruction")}
             <span class="phone-edit-wrapper">
                 <span id="phone-display" class="phone-highlight">${phone!''}</span>
                 <button type="button" id="btn-edit-phone" class="btn-icon" aria-label="${msg('changePhoneText')}">
@@ -17,47 +17,47 @@
                 </button>
             </span>
         </div>
-        <div class="otp-group">
-            <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="otp-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
+        <div class="code-group">
+            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
+            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
+            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
+            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
+            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
+            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
         </div>
         <div class="button-group">
-            <button type="submit" id="btn-submit-otp" class="btn-primary">
+            <button type="submit" id="btn-submit-code" class="btn-primary">
                 ${msg("signInText")}
             </button>
         </div>
         <#if timer?? && timer > 0>
             <div class="resend-group">
                 <button type="button" id="btn-resend" class="btn-resend" disabled>
-                    ${msg("resendOtpText")} (<span id="timer-countdown">${timer}</span>)
+                    ${msg("resendCodeText")} (<span id="timer-countdown">${timer}</span>)
                 </button>
             </div>
-        <#elseif sendingOtp?? && sendingOtp == true>
-            <div class="sending-container">${msg("sendingOtpText")}</div>
+        <#elseif sendingCode?? && sendingCode == true>
+            <div class="sending-container">${msg("sendingCodeText")}</div>
         <#else>
             <div class="resend-group">
                 <button type="button" id="btn-resend" class="btn-resend">
-                    ${msg("resendOtpText")}
+                    ${msg("resendCodeText")}
                 </button>
             </div>
         </#if>
-        <#if otpErrorKey??>
+        <#if codeErrorKey??>
             <div class="input-error">
-                <span class="error-text">${msg(otpErrorKey)}</span>
+                <span class="error-text">${msg(codeErrorKey)}</span>
             </div>
         </#if>
     </div>
 </form>
 <script>
 (function () {
-    const form = document.getElementById("otp-form");
-    const submitBtn = document.getElementById("btn-submit-otp");
-    const hiddenOtp = document.getElementById("otp");
-    const inputs = Array.from(document.querySelectorAll(".otp-input"));
+    const form = document.getElementById("code-form");
+    const submitBtn = document.getElementById("btn-submit-code");
+    const hiddenCode = document.getElementById("code");
+    const inputs = Array.from(document.querySelectorAll(".code-input"));
     inputs.forEach((inp, idx) => {
         inp.addEventListener("input", function () {
             this.value = this.value.replace(/[^0-9]/g, "");
@@ -68,7 +68,7 @@
         });
     });
     form.addEventListener("submit", function () {
-        hiddenOtp.value = inputs.map(i => i.value || "").join("");
+        hiddenCode.value = inputs.map(i => i.value || "").join("");
         submitBtn.disabled = true;
         submitBtn.innerText = "${msg('signingInText')}";
     });
@@ -88,7 +88,7 @@
         }, 1000);
     }
 })();
-function resendOtp() {}
+function resendCode() {}
 function changePhoneNumber() {}
 </script>
 </@layout.layoutBody>

@@ -23,17 +23,17 @@
             </div>
         </#if>
         <div class="button-group">
-            <button type="submit" id="btn-send-otp" class="btn-primary">
-                ${msg("sendOtpText")}
+            <button type="submit" id="btn-send-code" class="btn-primary">
+                ${msg("sendCodeText")}
             </button>
         </div>
     </div>
 </form>
 <script>
 document.getElementById("login-form").addEventListener("submit", function () {
-    const btn = document.getElementById("btn-send-otp");
+    const btn = document.getElementById("btn-send-code");
     btn.disabled = true;
-    btn.innerText = "${msg('sendingOtpText')}";
+    btn.innerText = "${msg('sendingCodeText')}";
 });
 </script>
 </@layout.layoutBody>
