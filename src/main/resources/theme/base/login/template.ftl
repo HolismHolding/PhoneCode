@@ -18,7 +18,7 @@
             <#if logoUrl?? && logoUrl?has_content>
             <div class="login-logo">
                 <span class="shine-effect"></span>
-                    <img src="${logoUrl}" alt="Logo" style="max-height: 80px; margin-bottom: 20px;" />
+                <img src="${logoUrl}" alt="${realm.displayName!''}" />
             </div>
             </#if>
             <h1 class="header-title">${realm.displayName!''}</h1>
