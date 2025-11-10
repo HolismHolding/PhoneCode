@@ -7,15 +7,18 @@
             ${msg("phoneIntroText")}
         </label>
         <div class="input-group">
+            <#assign phonePlaceholder = msg('phonePlaceholder', ' ')>
             <input
                 type="tel"
                 id="phone"
                 name="phone"
-                placeholder="${msg('phonePlaceholder',' ')}"
+                placeholder="${phonePlaceholder}"
                 value="${phone!''}"
                 aria-invalid="<#if phoneErrorKey??>true</#if>"
                 autocomplete="off">
-            <label for="phone">${msg("phoneLabel")}</label>
+            <#if phonePlaceholder?trim?length == 0>
+                <label for="phone">${msg("phoneLabel")}</label>
+            </#if>
         </div>
         <#if phoneErrorKey??>
             <div class="input-error">
