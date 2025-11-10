@@ -15,7 +15,7 @@ public class CodeVerifier {
         String expectedCode = context.getAuthenticationSession().getAuthNote("code");
         String phone = context.getAuthenticationSession().getAuthNote("phone");
 
-        LOG.infof("Phone: %s, Expected OTP: %s, Entered OTP: %s", phone, expectedCode, enteredCode);
+        LOG.infof("Phone: %s, Expected code: %s, Entered code: %s", phone, expectedCode, enteredCode);
 
         if (expectedCode != null && expectedCode.equals(enteredCode)) {
             RealmModel realm = context.getRealm();

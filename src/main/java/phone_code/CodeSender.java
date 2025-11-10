@@ -20,14 +20,14 @@ public class CodeSender {
             RealmModel realm = context.getRealm();
             Boolean fakeSending = Config.getConfig(context, "fakeSendingCode", Boolean.class, false);
             if (fakeSending) {
-                LOG.info("Fake sending OTP enabled — skipping actual send for phone: " + phone + " and OTP: " + code);
+                LOG.info("Fake sending code enabled — skipping actual send for phone: " + phone + " and code: " + code);
                 return true;
             }
 
             String urlTemplate = Config.getConfig(context, "codeUrlTemplate", String.class);
 
             if (urlTemplate == null || urlTemplate.isEmpty()) {
-                LOG.error("OTP URL template not configured");
+                LOG.error("Code URL template not configured");
                 context.getSession().setAttribute("codeErrorKey", "codeConfigMissing");
                 return false;
             }
@@ -37,7 +37,7 @@ public class CodeSender {
                     .replace("{code}", code)
                     .replace("{realm}", realm.getName());
 
-            LOG.info("Sending OTP request to URL: " + urlString);
+            LOG.info("Sending code request to URL: " + urlString);
 
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -59,7 +59,7 @@ public class CodeSender {
             reader.close();
             conn.disconnect();
 
-            LOG.info("OTP server response (" + status + "): " + response);
+            LOG.info("Code server response (" + status + "): " + response);
 
             String message = null;
             String resp = response.toString().trim();
@@ -85,7 +85,7 @@ public class CodeSender {
             }
 
         } catch (Exception e) {
-            LOG.error("Failed to send OTP: " + e.getMessage(), e);
+            LOG.error("Failed to send code: " + e.getMessage(), e);
             context.getSession().setAttribute("codeErrorKey", "codeSendFailed");
             return false;
         }
