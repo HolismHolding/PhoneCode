@@ -74,6 +74,7 @@ public class Auth implements Authenticator {
             LoginFormsProvider form = context.form();
             form.setAttribute("phone", phone);
             form.setAttribute("codeLength", code.length());
+            form.setAttribute("defaultCodeLength", CodeGenerator.DEFAULT_CODE_LENGTH);
             form.setAttribute("secondsToEnableResending", secondsToEnableResending);
             form.setAttribute("enablePhoneCall", enablePhoneCall);
             form.setAttribute("separateCodeInputs", separateCodeInputs);

@@ -7,7 +7,7 @@
             <h2 class="step-title">${msg("codeLabel")}</h2>
         </div>
         <div class="step-description">
-            ${msg("enterCodeInstruction")}
+            ${msg('enterCodeInstruction', codeLength!defaultCodeLength)}
             <span class="phone-edit-wrapper">
                 <span id="phone-display" class="phone-highlight">${phone!''}</span>
                 <button type="button" id="btn-edit-phone" class="btn-icon" aria-label="${msg('changePhoneText')}">
