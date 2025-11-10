@@ -1251,7 +1251,7 @@
         },
         {
             "id": "8fdfe136-7906-4825-9271-f5bd6526145e",
-            "alias": "Phone Code browser",
+            "alias": "Phone code browser",
             "description": "Browser based authentication",
             "providerId": "basic-flow",
             "topLevel": true,
