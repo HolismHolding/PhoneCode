@@ -1,13 +1,14 @@
 <#import "template.ftl" as layout>
 <@layout.layoutBody>
 <form id="code-form" class="login-card" action="${url.loginAction}" method="POST" autocomplete="off" novalidate>
+    <#assign effectiveCodeLength = codeLength?default(defaultCodeLength)>
     <input type="hidden" id="code" name="code" value="${code!''}" />
     <div id="code-step" class="login-step">
         <div class="step-header">
             <h2 class="step-title">${msg("codeLabel")}</h2>
         </div>
         <div class="step-description">
-            ${msg('enterCodeInstruction', codeLength!defaultCodeLength)}
+            ${msg('enterCodeInstruction', effectiveCodeLength)}
             <span class="phone-edit-wrapper">
                 <span id="phone-display" class="phone-highlight">${phone!''}</span>
                 <button type="button" id="btn-edit-phone" class="btn-icon" aria-label="${msg('changePhoneText')}">
@@ -17,19 +18,25 @@
                 </button>
             </span>
         </div>
-        <div class="code-group">
-            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-            <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
-        </div>
+
+        <#if separateCodeInputs?? && separateCodeInputs>
+            <div class="code-group">
+                <#list 1..effectiveCodeLength as i>
+                    <input type="tel" class="code-input" maxlength="1" inputmode="numeric" autocomplete="one-time-code" />
+                </#list>
+            </div>
+        <#else>
+            <div class="code-group">
+                <input type="tel" id="code-single" inputmode="numeric" autocomplete="one-time-code" />
+            </div>
+        </#if>
+
         <div class="button-group">
             <button type="submit" id="btn-submit-code" class="btn-primary">
                 ${msg("signInText")}
             </button>
         </div>
+
         <#if timer?? && timer > 0>
             <div class="resend-group">
                 <button type="button" id="btn-resend" class="btn-resend" disabled>
@@ -45,6 +52,7 @@
                 </button>
             </div>
         </#if>
+
         <#if codeErrorKey??>
             <div class="input-error">
                 <span class="error-text">${msg(codeErrorKey)}</span>
@@ -52,26 +60,38 @@
         </#if>
     </div>
 </form>
+
 <script>
 (function () {
     const form = document.getElementById("code-form");
     const submitBtn = document.getElementById("btn-submit-code");
     const hiddenCode = document.getElementById("code");
     const inputs = Array.from(document.querySelectorAll(".code-input"));
-    inputs.forEach((inp, idx) => {
-        inp.addEventListener("input", function () {
+    const single = document.getElementById("code-single");
+
+    if (inputs.length > 0) {
+        inputs.forEach((inp, idx) => {
+            inp.addEventListener("input", function () {
+                this.value = this.value.replace(/[^0-9]/g, "");
+                if (this.value && idx < inputs.length - 1) inputs[idx + 1].focus();
+            });
+            inp.addEventListener("keydown", function (e) {
+                if (e.key === "Backspace" && !this.value && idx > 0) inputs[idx - 1].focus();
+            });
+        });
+    } else if (single) {
+        single.addEventListener("input", function () {
             this.value = this.value.replace(/[^0-9]/g, "");
-            if (this.value && idx < inputs.length - 1) inputs[idx + 1].focus();
         });
-        inp.addEventListener("keydown", function (e) {
-            if (e.key === "Backspace" && !this.value && idx > 0) inputs[idx - 1].focus();
-        });
-    });
+    }
+
     form.addEventListener("submit", function () {
-        hiddenCode.value = inputs.map(i => i.value || "").join("");
+        const value = inputs.length > 0 ? inputs.map(i => i.value || "").join("") : (single ? single.value || "" : "");
+        hiddenCode.value = value;
         submitBtn.disabled = true;
         submitBtn.innerText = "${msg('signingInText')}";
     });
+
     const timerSpan = document.getElementById("timer-countdown");
     const resendBtn = document.getElementById("btn-resend");
     if (timerSpan && resendBtn) {
