@@ -24,7 +24,8 @@ public class CodeVerifier {
             context.success();
         } else {
             LoginFormsProvider form = context.form();
-            form.setAttribute("phone", phone);
+            Integer codeLength = expectedCode != null ? expectedCode.length() : null;
+            CodeFormHelper.apply(context, form, phone, codeLength);
             form.setAttribute("codeErrorKey", "invalidCodeText");
             Response codeForm = form.createForm("code.ftl");
             context.challenge(codeForm);

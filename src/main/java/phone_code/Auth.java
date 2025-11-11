@@ -25,6 +25,7 @@ public class Auth implements Authenticator {
         LoginFormsProvider form = context.form();
         form.setAttribute("phone", phone);
         form.setAttribute("phoneErrorKey", errorKey);
+        form.setAttribute("defaultCodeLength", CodeGenerator.DEFAULT_CODE_LENGTH);
         String logoUrl = Config.getConfig(context, "logoUrl", String.class);
         if (logoUrl != null) {
             form.setAttribute("logoUrl", logoUrl);
@@ -36,6 +37,8 @@ public class Auth implements Authenticator {
     @Override
     public void action(AuthenticationFlowContext context) {
         MultivaluedMap<String, String> formParams = context.getHttpRequest().getDecodedFormParameters();
+        LoginFormsProvider form = context.form();
+        form.setAttribute("defaultCodeLength", CodeGenerator.DEFAULT_CODE_LENGTH);
 
         if (formParams.containsKey("code")) {
             codeVerifier.verify(context, formParams.getFirst("code"));
@@ -65,30 +68,14 @@ public class Auth implements Authenticator {
         context.getAuthenticationSession().setAuthNote("phone", phone);
 
         if (codeSender.send(context, phone, code)) {
-            Integer secondsToEnableResending = Config.getConfig(context, "secondsToEnableResending", Integer.class);
-            Boolean enablePhoneCall = Config.getConfig(context, "enablePhoneCall", Boolean.class);
-            Boolean separateCodeInputs = Config.getConfig(context, "separateCodeInputs", Boolean.class);
-            Boolean autoSubmitCode = Config.getConfig(context, "autoSubmitCode", Boolean.class);
-            String logoUrl = Config.getConfig(context, "logoUrl", String.class);
-
-            LoginFormsProvider form = context.form();
-            form.setAttribute("phone", phone);
-            form.setAttribute("codeLength", code.length());
-            form.setAttribute("defaultCodeLength", CodeGenerator.DEFAULT_CODE_LENGTH);
-            form.setAttribute("secondsToEnableResending", secondsToEnableResending);
-            form.setAttribute("enablePhoneCall", enablePhoneCall);
-            form.setAttribute("separateCodeInputs", separateCodeInputs);
-            form.setAttribute("autoSubmitCode", autoSubmitCode);
-            if (logoUrl != null) {
-                form.setAttribute("logoUrl", logoUrl);
-            }
-            context.challenge(form.createForm("code.ftl"));
+            LoginFormsProvider codeFormProvider = context.form();
+            CodeFormHelper.apply(context, codeFormProvider, phone, code.length());
+            context.challenge(codeFormProvider.createForm("code.ftl"));
         } else {
             String error = (String) session.getAttribute("codeErrorKey");
             context.getSession().setAttribute("phoneErrorKey", error != null ? error : "codeSendFailed");
             authenticate(context);
         }
-
     }
 
     @Override public boolean requiresUser() { return false; }
