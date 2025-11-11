@@ -1,7 +1,7 @@
 <#import "template.ftl" as layout>
 <@layout.layoutBody>
 <form id="code-form" class="login-card" action="${url.loginAction}" method="POST" autocomplete="off" novalidate>
-    <#assign effectiveCodeLength = codeLength?default(defaultCodeLength)>
+    <#assign effectiveCodeLength = (codeLength!defaultCodeLength)?number>
     <input type="hidden" id="code" name="code" value="${code!''}" />
     <div id="code-step" class="login-step">
         <div class="step-header">

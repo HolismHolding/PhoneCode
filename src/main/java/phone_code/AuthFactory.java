@@ -59,7 +59,7 @@ public class AuthFactory implements AuthenticatorFactory {
 
     @Override
     public String getDisplayType() {
-        return "Phone code (Quick)";
+        return "Phone code";
     }
 
     @Override
