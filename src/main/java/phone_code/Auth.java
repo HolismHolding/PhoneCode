@@ -16,12 +16,7 @@ public class Auth implements Authenticator {
     private final CodeVerifier codeVerifier = new CodeVerifier();
     private final CodeGenerator codeGenerator = new CodeGenerator();
 
-    @Override
-    public void authenticate(AuthenticationFlowContext context) {
-        String phone = (String) context.getSession().getAttribute("phone");
-        String errorKey = (String) context.getSession().getAttribute("phoneErrorKey");
-        context.getSession().removeAttribute("phoneErrorKey");
-
+    private void showPhoneForm(AuthenticationFlowContext context, String phone, String errorKey) {
         LoginFormsProvider form = context.form();
         form.setAttribute("phone", phone);
         form.setAttribute("phoneErrorKey", errorKey);
@@ -30,8 +25,15 @@ public class Auth implements Authenticator {
         if (logoUrl != null) {
             form.setAttribute("logoUrl", logoUrl);
         }
-
         context.challenge(form.createForm("phone.ftl"));
+    }
+
+    @Override
+    public void authenticate(AuthenticationFlowContext context) {
+        String phone = (String) context.getSession().getAttribute("phone");
+        String errorKey = (String) context.getSession().getAttribute("phoneErrorKey");
+        context.getSession().removeAttribute("phoneErrorKey");
+        showPhoneForm(context, phone, errorKey);
     }
 
     @Override
@@ -39,6 +41,12 @@ public class Auth implements Authenticator {
         MultivaluedMap<String, String> formParams = context.getHttpRequest().getDecodedFormParameters();
         LoginFormsProvider form = context.form();
         form.setAttribute("defaultCodeLength", CodeGenerator.DEFAULT_CODE_LENGTH);
+
+        if (formParams.containsKey("backToPhone")) {
+            String phone = context.getAuthenticationSession().getClientNote("phone");
+            showPhoneForm(context, phone, null);
+            return;
+        }
 
         if (formParams.containsKey("code")) {
             codeVerifier.verify(context, formParams.getFirst("code"));
