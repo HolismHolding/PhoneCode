@@ -4,8 +4,7 @@
             "name": "phoneCode",
             "types": [
                 "login"
-            ],
-            "path": "theme/phoneCode"
+            ]
         }
     ]
 }
