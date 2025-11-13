@@ -43,7 +43,7 @@ public class Auth implements Authenticator {
         form.setAttribute("defaultCodeLength", CodeGenerator.DEFAULT_CODE_LENGTH);
 
         if (formParams.containsKey("backToPhone")) {
-            String phone = context.getAuthenticationSession().getClientNote("phone");
+            String phone = context.getAuthenticationSession().getAuthNote("phone");
             showPhoneForm(context, phone, null);
             return;
         }
