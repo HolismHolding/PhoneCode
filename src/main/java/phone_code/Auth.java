@@ -22,9 +22,7 @@ public class Auth implements Authenticator {
         form.setAttribute("phoneErrorKey", errorKey);
         form.setAttribute("defaultCodeLength", CodeGenerator.DEFAULT_CODE_LENGTH);
         String logoUrl = Config.getConfig(context, "logoUrl", String.class);
-        if (logoUrl != null) {
-            form.setAttribute("logoUrl", logoUrl);
-        }
+        if (logoUrl != null) form.setAttribute("logoUrl", logoUrl);
         context.challenge(form.createForm("phone.ftl"));
     }
 
@@ -45,6 +43,23 @@ public class Auth implements Authenticator {
         if (formParams.containsKey("backToPhone")) {
             String phone = context.getAuthenticationSession().getAuthNote("phone");
             showPhoneForm(context, phone, null);
+            return;
+        }
+
+        if (formParams.containsKey("resend")) {
+            String phone = context.getAuthenticationSession().getAuthNote("phone");
+            Integer codeLength = Config.getConfig(context, "codeLength", Integer.class);
+            String code = codeGenerator.generate(codeLength);
+            context.getAuthenticationSession().setAuthNote("code", code);
+
+            if (codeSender.send(context, phone, code)) {
+                LoginFormsProvider codeFormProvider = context.form();
+                CodeFormHelper.apply(context, codeFormProvider, phone, code.length());
+                context.challenge(codeFormProvider.createForm("code.ftl"));
+            } else {
+                context.getSession().setAttribute("phoneErrorKey", "codeSendFailed");
+                showPhoneForm(context, phone, null);
+            }
             return;
         }
 
