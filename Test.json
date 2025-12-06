@@ -1961,7 +1961,7 @@
         "clientSessionMaxLifespan": "0",
         "darkMode": "true"
     },
-    "keycloakVersion": "26.4.5",
+    "keycloakVersion": "26.4.7",
     "userManagedAccessAllowed": false,
     "organizationsEnabled": false,
     "verifiableCredentialsEnabled": false,
